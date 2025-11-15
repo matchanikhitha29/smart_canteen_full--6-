@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+/* ----------------------------- */
+/* 🌈 PAGE BACKGROUND            */
+/* ----------------------------- */
+
+body {
+  background: linear-gradient(135deg, #e0ffe7, #f3f9ff, #fff0f6);
+  background-size: 300% 300%;
+  animation: bgShift 14s ease infinite;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 50%; }
+  50%{ background-position: 100% 50%; }
+  100%{ background-position: 0% 50%; }
+}
+
+/* ----------------------------- */
+/* 🎉 SUCCESS CONTAINER CARD     */
+/* ----------------------------- */
+
+.success-box {
+  max-width: 480px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(14px);
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+  text-align: center;
+  animation: popIn 0.8s ease-out;
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ----------------------------- */
+/* ✔ SUCCESS TICK ANIMATION      */
+/* ----------------------------- */
+
+.success-tick {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #28c76f;
+  margin: 0 auto 15px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 45px;
+  animation: tickPop 0.6s ease-out;
+}
+
+@keyframes tickPop {
+  0% { transform: scale(0.3); opacity: 0; }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ----------------------------- */
+/* ✨ TEXT STYLING               */
+/* ----------------------------- */
+
+.success-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2e2e2e;
+  animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.success-details {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #333;
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ----------------------------- */
+/* 🎉 BACK BUTTON                */
+/* ----------------------------- */
+
+.btn-animated {
+  background: linear-gradient(135deg, #7367f0, #9b51e0);
+  border: none;
+  padding: 12px 26px;
+  color: white;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+  box-shadow: 0px 5px 18px rgba(0,0,0,0.18);
+}
+
+.btn-animated:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+}
+
+/* ----------------------------- */
+/* 🎊 CONFETTI ANIMATION         */
+/* ----------------------------- */
+
+.confetti {
+  position: fixed;
+  top: -10px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: #ffcc00;
+  opacity: 0.9;
+  border-radius: 2px;
+  animation: confettiFall 2.5s linear infinite;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(120vh) rotate(360deg); }
+}
+
+</style>
+
+
+<!-- 🌟 Confetti Elements -->
+<div class="confetti" style="left:10%; background:#ff7675"></div>
+<div class="confetti" style="left:30%; background:#74b9ff; animation-delay:0.4s;"></div>
+<div class="confetti" style="left:50%; background:#55efc4; animation-delay:0.8s;"></div>
+<div class="confetti" style="left:70%; background:#ffeaa7; animation-delay:0.3s;"></div>
+<div class="confetti" style="left:90%; background:#a29bfe; animation-delay:0.6s;"></div>
+
+
+<!-- 🌟 SUCCESS BOX -->
+<div class="success-box">
+
+  <div class="success-tick">✔</div>
+
+  <h2 class="success-title">Order Placed Successfully!</h2>
+
+  <p class="success-details">
+    Thank you for your order 🎉 <br>
+    <strong>Order ID:</strong> #{{ order.id }} <br>
+    <strong>Total Amount:</strong> ₹{{ order.total_price }}
+  </p>
+
+  <a href="{% url 'menu_list' %}" class="btn btn-animated mt-3">
+    Back to Menu
+  </a>
+
+</div>
+
+{% endblock %}

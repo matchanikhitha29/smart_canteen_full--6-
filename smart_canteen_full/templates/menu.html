@@ -1,0 +1,769 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+/* ----------------------------- */
+/* 🌈 GLOBAL PAGE STYLING        */
+/* ----------------------------- */
+
+body {
+  background: linear-gradient(120deg, #fdfbfb, #ebedee);
+  animation: bgmove 12s infinite alternate ease-in-out;
+  background-size: 150% 150%;
+  transition: background 0.4s ease;
+}
+
+@keyframes bgmove {
+  0% { background-position: 0% 30%; }
+  100% { background-position: 100% 70%; }
+}
+
+/* Dark mode override */
+html[data-bs-theme="dark"] body {
+  background: radial-gradient(circle at top, #25274d, #141414);
+}
+
+/* ----------------------------- */
+/* 🔝 HEADER & CART BUTTON       */
+/* ----------------------------- */
+
+h2.fw-bold {
+  font-weight: 800;
+}
+
+#cartButton {
+  border-width: 2px;
+  font-weight: 600;
+  border-radius: 999px;
+  transition: 0.3s ease;
+}
+
+#cartButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+
+/* ----------------------------- */
+/* 🔍 FILTER BAR + ANIMATION     */
+/* ----------------------------- */
+
+.animated-filter {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  padding: 14px 14px 10px 14px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+  animation: slideDown 0.6s ease-out;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+html[data-bs-theme="dark"] .animated-filter {
+  background: rgba(20, 20, 20, 0.9);
+  border-color: rgba(255,255,255,0.06);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animated-filter input,
+.animated-filter select {
+  border: 2px solid #d1d1d1 !important;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.animated-filter input:focus,
+.animated-filter select:focus {
+  border-color: #4c79ff !important;
+  box-shadow: 0 0 10px rgba(76, 121, 255, 0.3);
+}
+
+/* ----------------------------- */
+/* 🧷 CATEGORY CHIPS (STYLE A)   */
+/* ----------------------------- */
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.category-chips .chip {
+  border: none;
+  outline: none;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: #f3f4ff;
+  color: #3a3a6a;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
+}
+
+.category-chips .chip span.emoji {
+  font-size: 1.1rem;
+}
+
+.category-chips .chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.16);
+}
+
+.category-chips .chip.active {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: #ffffff;
+}
+
+html[data-bs-theme="dark"] .category-chips .chip {
+  background: #25274d;
+  color: #f5f5f5;
+}
+
+/* ----------------------------- */
+/* ⭐ RECOMMENDED SECTION        */
+/* ----------------------------- */
+
+#recommended-section {
+  margin-bottom: 22px;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.recommended-row {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 6px;
+}
+
+.recommended-row::-webkit-scrollbar {
+  height: 6px;
+}
+.recommended-row::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 999px;
+}
+
+/* Small recommended cards */
+.recommended-card {
+  min-width: 220px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+  border: none;
+}
+.recommended-card img {
+  height: 120px;
+  object-fit: cover;
+}
+
+/* ----------------------------- */
+/* 🍽 MENU CARD STYLING          */
+/* ----------------------------- */
+
+.card.menu-card {
+  border: none !important;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.card.menu-card::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 20px;
+  background: linear-gradient(45deg, #ffecd2, #fcb69f, #c2e9fb, #a1c4fd);
+  z-index: -1;
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+.card.menu-card:hover::before {
+  opacity: 1;
+}
+
+.card.menu-card .card-img-top {
+  transition: transform 0.4s ease;
+}
+
+.card.menu-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+.card.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0px 12px 25px rgba(0,0,0,0.18);
+}
+
+html[data-bs-theme="dark"] .card.menu-card {
+  background: #1e1e1e;
+  box-shadow: 0px 6px 20px rgba(0,0,0,0.6);
+}
+
+/* Rating stars */
+.text-warning,
+.text-muted {
+  font-size: 17px;
+}
+
+/* Price */
+.fw-bold {
+  font-size: 1.1rem;
+  color: #2b2b2b;
+}
+html[data-bs-theme="dark"] .fw-bold {
+  color: #f0f0f0;
+}
+
+/* Buttons */
+.btn-success {
+  transition: 0.3s ease;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn-success:hover {
+  transform: scale(1.1);
+  background-color: #1e9c53;
+}
+
+.btn-outline-danger {
+  transition: 0.3s ease;
+  border-radius: 8px;
+}
+
+.btn-outline-danger:hover {
+  transform: scale(1.08);
+}
+
+/* ----------------------------- */
+/* 💀 SKELETON LOADING           */
+/* ----------------------------- */
+
+.skeleton-grid {
+  display: none;
+}
+
+body:not(.menu-loaded) .skeleton-grid {
+  display: flex;
+}
+
+body:not(.menu-loaded) .real-grid {
+  display: none;
+}
+
+.skeleton-card {
+  border-radius: 15px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.10);
+  padding-bottom: 14px;
+}
+
+.skeleton-img {
+  height: 180px;
+  background: #e0e0e0;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 999px;
+  background: #e0e0e0;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.1),
+    rgba(255,255,255,0.5),
+    rgba(255,255,255,0.1)
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -150%; }
+  100% { left: 150%; }
+}
+
+/* ----------------------------- */
+/* 🔔 TOAST (Add to cart)       */
+/* ----------------------------- */
+
+.cart-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+.cart-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html[data-bs-theme="dark"] .cart-toast {
+  background: #fafafa;
+  color: #111;
+}
+
+/* ----------------------------- */
+/* 📱 RESPONSIVE                */
+/* ----------------------------- */
+
+@media (max-width: 768px) {
+  h2.fw-bold {
+    font-size: 1.6rem !important;
+  }
+
+  .card-img-top {
+    height: 180px !important;
+  }
+
+  .animated-filter {
+    padding: 12px;
+  }
+
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-img-top {
+    height: 150px !important;
+  }
+
+  .fw-bold {
+    font-size: 1rem;
+  }
+
+  #cartButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ----------------------------- */
+/* 🔻 FOOTER                    */
+/* ----------------------------- */
+
+.custom-footer {
+  margin-top: 40px;
+  padding-top: 18px;
+  padding-bottom: 12px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  font-size: 0.9rem;
+  color: #555;
+  animation: slideUp 0.7s ease-out;
+}
+
+.custom-footer a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+html[data-bs-theme="dark"] .custom-footer {
+  border-color: rgba(255,255,255,0.16);
+  color: #e0e0e0;
+}
+
+</style>
+
+
+
+<!-- ======================= -->
+<!--        HEADER           -->
+<!-- ======================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="fw-bold">Menu</h2>
+  <div>
+    <a href="{% url 'cart_view' %}" class="btn btn-outline-primary d-inline-flex align-items-center gap-1" id="cartButton">
+      🛒 Cart 
+      <span class="badge bg-secondary">{{ cart_count }}</span> 
+      (₹{{ cart_total }})
+    </a>
+  </div>
+</div>
+
+
+
+<!-- ======================= -->
+<!--  FILTERS + CATEGORY     -->
+<!-- ======================= -->
+
+<form method="get" class="row g-3 mb-4 animated-filter" id="filterForm">
+
+  <!-- Search -->
+  <div class="col-md-4">
+    <input 
+      type="text" 
+      name="q" 
+      value="{{ request.GET.q }}" 
+      class="form-control" 
+      placeholder="Search items..."
+    >
+  </div>
+
+  <!-- Available Only Checkbox -->
+  <div class="col-md-3 d-flex align-items-center">
+    <div class="form-check">
+      <input 
+        class="form-check-input"
+        type="checkbox"
+        name="available_only"
+        id="available_only"
+        value="on"
+        {% if request.GET.available_only == "on" %} checked {% endif %}
+      >
+      <label class="form-check-label" for="available_only">Available only</label>
+    </div>
+  </div>
+
+  <!-- Filter Button -->
+  <div class="col-md-2">
+    <button class="btn btn-primary w-100" type="submit">Filter</button>
+  </div>
+
+  <!-- Hidden category input (controlled by chips) -->
+  <input type="hidden" name="category" id="categoryInput" value="{{ selected_category }}">
+
+  <!-- Category Chips -->
+  <div class="col-12 mt-1">
+    <div class="category-chips">
+      <!-- All chip -->
+      <button type="button" class="chip {% if not selected_category %}active{% endif %}" data-value="">
+        <span class="emoji">✨</span> All
+      </button>
+
+      {% for cat in categories %}
+      <button 
+        type="button" 
+        class="chip {% if cat == selected_category %}active{% endif %}" 
+        data-value="{{ cat }}"
+      >
+        <span class="emoji">
+          {% if cat == "Breakfast" %}🍳
+          {% elif cat == "Beverage" %}☕
+          {% elif cat == "Meal" %}🍛
+          {% elif cat == "Non-Veg" %}🍗
+          {% else %}🍽️
+          {% endif %}
+        </span>
+        {{ cat }}
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+</form>
+
+
+
+<!-- ======================= -->
+<!--   RECOMMENDED SECTION   -->
+<!-- ======================= -->
+
+<div id="recommended-section">
+  <h5 class="fw-bold mb-2">Recommended for you ⭐</h5>
+  <div class="recommended-row">
+    {% for item in items %}
+      {% if item.rating >= 4 %}
+      <div class="card recommended-card">
+        {% if item.image %}
+          <img src="{{ item.image.url }}" class="card-img-top">
+        {% else %}
+          <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top">
+        {% endif %}
+        <div class="card-body py-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold small">{{ item.name }}</span>
+            <span class="badge bg-warning text-dark">★ {{ item.rating }}</span>
+          </div>
+          <small class="text-muted">{{ item.category }}</small><br>
+          <small class="fw-bold">₹{{ item.price }}</small>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+
+
+<!-- ======================= -->
+<!--   SKELETON PLACEHOLDERS -->
+<!-- ======================= -->
+
+<div class="row skeleton-grid">
+  {% for i in "123" %}
+  <div class="col-md-4 mb-3">
+    <div class="skeleton-card">
+      <div class="skeleton-img shimmer"></div>
+      <div class="card-body">
+        <div class="skeleton-line w-75 shimmer mt-3"></div>
+        <div class="skeleton-line w-50 shimmer mt-3"></div>
+        <div class="skeleton-line w-100 shimmer mt-3"></div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+
+<!-- ======================= -->
+<!--      REAL MENU ITEMS    -->
+<!-- ======================= -->
+
+<div class="row real-grid" id="menuGrid">
+  {% for item in items %}
+  <div class="col-md-4 mb-3 menu-item-col">
+    
+    <div class="card h-100 menu-card">
+
+      <!-- Image -->
+      {% if item.image %}
+        <img src="{{ item.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+      {% else %}
+        <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" style="height:200px; object-fit:cover;">
+      {% endif %}
+
+      <div class="card-body d-flex flex-column">
+
+        <!-- Title -->
+        <h5 class="card-title mt-2 fw-bold">{{ item.name }}</h5>
+
+        <!-- Rating Stars -->
+        <div class="mb-1">
+          {% for i in "12345" %}
+            {% if forloop.counter <= item.rating %}
+              <span class="text-warning">★</span>
+            {% else %}
+              <span class="text-muted">☆</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Category -->
+        <p class="card-text text-muted small">{{ item.category }}</p>
+
+        <!-- Description -->
+        <p class="card-text flex-grow-1">{{ item.description|default:"Tasty item" }}</p>
+
+        <!-- Price + Buttons -->
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          
+          <span class="fw-bold">₹{{ item.price }}</span>
+
+          <div>
+
+            {% if item.available %}
+              <a href="{% url 'add_to_cart' item.id %}" class="btn btn-sm btn-success add-to-cart-btn">Add</a>
+            {% else %}
+              <span class="badge bg-secondary">Not Available</span>
+            {% endif %}
+
+            {% if user.is_staff %}
+              <a href="{% url 'toggle_item' item.id %}" class="btn btn-sm btn-outline-danger">Toggle</a>
+            {% endif %}
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  {% empty %}
+  <p>No items found.</p>
+  {% endfor %}
+</div>
+
+<!-- Load more button -->
+<div class="text-center mt-2" id="loadMoreWrapper" style="display:none;">
+  <button class="btn btn-outline-secondary" id="loadMoreBtn">Load more</button>
+</div>
+
+
+
+<!-- ======================= -->
+<!--         FOOTER          -->
+<!-- ======================= -->
+
+<footer class="custom-footer text-center">
+  <div>© {% now "Y" %} Smart Canteen. All rights reserved.</div>
+  <div>
+    <small>Made with ❤️ for your campus • <a href="#">Privacy</a> • <a href="#">Terms</a></small>
+  </div>
+</footer>
+
+
+
+<!-- ======================= -->
+<!--         TOAST           -->
+<!-- ======================= -->
+
+<div class="cart-toast" id="cartToast">
+  ✅ Item added to cart
+</div>
+
+
+
+<!-- ======================= -->
+<!--         JS LOGIC        -->
+<!-- ======================= -->
+
+<script>
+// Mark content loaded -> hide skeletons & setup "load more"
+window.addEventListener('load', () => {
+  document.body.classList.add('menu-loaded');
+  setupLoadMore();
+});
+
+// Category chips -> submit form
+const filterForm = document.getElementById('filterForm');
+const categoryInput = document.getElementById('categoryInput');
+const chipButtons = document.querySelectorAll('.category-chips .chip');
+
+chipButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    chipButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const value = btn.getAttribute('data-value') || "";
+    categoryInput.value = value;
+    filterForm.submit();
+  });
+});
+
+// Add-to-cart animation
+const cartBtn = document.getElementById('cartButton');
+const addButtons = document.querySelectorAll('.add-to-cart-btn');
+const cartToast = document.getElementById('cartToast');
+
+function showCartToast() {
+  if (!cartToast) return;
+  cartToast.classList.add('show');
+  setTimeout(() => {
+    cartToast.classList.remove('show');
+  }, 1200);
+}
+
+function animateAddToCart(button) {
+  const card = button.closest('.card');
+  if (!card || !cartBtn) return;
+
+  const img = card.querySelector('.card-img-top');
+  if (!img) return;
+
+  const imgRect = img.getBoundingClientRect();
+  const cartRect = cartBtn.getBoundingClientRect();
+
+  const clone = img.cloneNode(true);
+  clone.style.position = 'fixed';
+  clone.style.left = imgRect.left + 'px';
+  clone.style.top = imgRect.top + 'px';
+  clone.style.width = imgRect.width + 'px';
+  clone.style.height = imgRect.height + 'px';
+  clone.style.zIndex = 9999;
+  clone.style.transition = 'all 0.6s ease-out';
+  document.body.appendChild(clone);
+
+  // Force reflow
+  void clone.offsetWidth;
+
+  clone.style.left = cartRect.left + (cartRect.width/2 - imgRect.width/4) + 'px';
+  clone.style.top = cartRect.top + (cartRect.height/2 - imgRect.height/4) + 'px';
+  clone.style.width = imgRect.width / 2 + 'px';
+  clone.style.height = imgRect.height / 2 + 'px';
+  clone.style.opacity = '0.1';
+  clone.style.transform = 'scale(0.5)';
+
+  setTimeout(() => {
+    clone.remove();
+  }, 650);
+}
+
+addButtons.forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const href = this.getAttribute('href');
+    animateAddToCart(this);
+    showCartToast();
+    setTimeout(() => {
+      window.location.href = href;
+    }, 350);
+  });
+});
+
+// Simple "Load more" behaviour
+function setupLoadMore() {
+  const items = document.querySelectorAll('.menu-item-col');
+  const loadMoreWrapper = document.getElementById('loadMoreWrapper');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  if (!items.length || !loadMoreWrapper || !loadMoreBtn) return;
+
+  let visibleCount = 6;  // items to show first
+  function updateVisible() {
+    items.forEach((el, idx) => {
+      el.style.display = idx < visibleCount ? '' : 'none';
+    });
+    if (visibleCount >= items.length) {
+      loadMoreWrapper.style.display = 'none';
+    } else {
+      loadMoreWrapper.style.display = 'block';
+    }
+  }
+
+  updateVisible();
+
+  loadMoreBtn.addEventListener('click', () => {
+    visibleCount += 6;
+    updateVisible();
+  });
+}
+</script>
+
+{% endblock %}

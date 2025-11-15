@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5>Total Orders</h5>
+        <p class="display-6">{{ total_orders }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5>Total Revenue</h5>
+        <p class="display-6">₹{{ total_revenue }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4>Recent Orders</h4>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Date</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in recent_orders %}
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ order.user }}</td>
+      <td>{{ order.created_at }}</td>
+      <td>₹{{ order.total_price }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No orders yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4 class="mt-4">Top Items</h4>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Quantity Sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in top_items %}
+    <tr>
+      <td>{{ row.item__name }}</td>
+      <td>{{ row.total_qty }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="2">No data.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,113 @@
+/* ---------- Global Styling ---------- */
+body {
+    background: linear-gradient(135deg, #dfe9f3, #ffffff);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ---------- Login Card ---------- */
+.login-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);  /* thicker shadow */
+    border: 2px solid #e0e0e0; /* thicker border */
+    transition: all 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.20);
+}
+
+/* ---------- Headings ---------- */
+.login-card h3 {
+    color: #333;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ---------- Input Fields ---------- */
+.form-control {
+    border: 2px solid #bfc5d1;  /* thicker input border */
+    padding: 10px;
+    font-size: 15px;
+    color: #333;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* ---------- Labels ---------- */
+.form-label {
+    font-weight: 600;
+    color: #444;  /* font color */
+}
+
+/* ---------- Buttons ---------- */
+.login-btn {
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+}
+
+/* ---------- Register Text ---------- */
+.login-card a {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.login-card a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 768px) {
+    /* Tablet */
+    .login-card {
+        padding: 25px;
+        width: 90%;
+        margin: auto;
+    }
+
+    .login-btn {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Mobile */
+    .login-card {
+        padding: 20px;
+        width: 100%;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+    .form-control {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .login-btn {
+        font-size: 15px;
+        padding: 8px;
+    }
+
+    .login-card h3 {
+        font-size: 22px;
+    }
+}
+
+

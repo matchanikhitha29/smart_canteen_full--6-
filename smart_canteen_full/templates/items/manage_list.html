@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Manage Items</h2>
+
+<div class="mb-3">
+  <a href="{% url 'item_create' %}" class="btn btn-success">+ Add New Item</a>
+</div>
+
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Available</th>
+      <th>Rating</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>
+        {% if item.image %}
+        <img src="{{ item.image.url }}" width="60" height="40" style="object-fit:cover;">
+        {% else %}
+        -
+        {% endif %}
+      </td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.category }}</td>
+      <td>₹{{ item.price }}</td>
+      <td>{{ item.available }}</td>
+      <td>{{ item.rating }}/5</td>
+      <td>
+        <a href="{% url 'item_edit' item.id %}" class="btn btn-sm btn-primary">Edit</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">No items.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

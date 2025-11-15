@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+/* 🌈 Soft Gradient Background */
+body {
+  background: linear-gradient(135deg, #fdfbfb, #eaf6ff, #fff2f8);
+  background-size: 300% 300%;
+  animation: bgShift 12s ease infinite;
+}
+
+@keyframes bgShift {
+  0% { background-position: 0% 40%; }
+  50% { background-position: 100% 60%; }
+  100% { background-position: 0% 40%; }
+}
+
+/* 🧊 Cart Box (Glass Effect) */
+.cart-box {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(15px);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+  animation: fadeUp 0.7s ease-out;
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 🪄 Animated table rows */
+.cart-row {
+  transition: 0.25s ease;
+}
+.cart-row:hover {
+  background: rgba(120,120,255,0.07);
+  transform: scale(1.01);
+}
+
+/* ➕➖ Quantity Buttons */
+.qty-btn {
+  border-radius: 8px;
+  transition: 0.25s ease;
+}
+.qty-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* 🟩 Animated Place Order Button */
+.btn-place {
+  background: linear-gradient(135deg, #28c76f, #1aa357);
+  color: white;
+  border: none;
+  padding: 12px 26px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  transition: 0.3s ease;
+}
+.btn-place:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.25);
+}
+
+/* 🎈 Empty Cart Animation */
+.empty-cart {
+  text-align: center;
+  padding: 40px;
+  animation: fadeIn 1.3s ease;
+}
+.empty-cart-icon {
+  font-size: 80px;
+  animation: bounce 1.3s infinite ease;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 576px) {
+  .cart-box {
+    padding: 15px;
+  }
+  table {
+    font-size: 0.9rem;
+  }
+
+  .btn-place {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+</style>
+
+<div class="cart-box">
+
+  <h2 class="fw-bold mb-3">🛒 Your Cart</h2>
+
+  {% if cart_items %}
+
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th style="width: 150px;">Quantity</th>
+        <th>Line Total</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for row in cart_items %}
+      <tr class="cart-row">
+        <td class="fw-semibold">{{ row.item.name }}</td>
+
+        <td>
+          <div class="btn-group" role="group">
+            <a href="{% url 'update_cart' row.item.id 'dec' %}"
+               class="btn btn-sm btn-outline-secondary qty-btn">−</a>
+
+            <span class="btn btn-sm btn-light disabled" style="min-width:40px;">
+              {{ row.quantity }}
+            </span>
+
+            <a href="{% url 'update_cart' row.item.id 'inc' %}"
+               class="btn btn-sm btn-outline-secondary qty-btn">+</a>
+          </div>
+        </td>
+
+        <td class="fw-bold">₹{{ row.line_total }}</td>
+
+        <td>
+          <a href="{% url 'remove_from_cart' row.item.id %}"
+             class="btn btn-sm btn-outline-danger">Remove</a>
+        </td>
+      </tr>
+      {% endfor %}
+
+      <tr class="fw-bold">
+        <td colspan="2" class="text-end">Total</td>
+        <td>₹{{ total }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-3 d-flex flex-wrap gap-2">
+    {% if user.is_authenticated %}
+      <a href="{% url 'place_order' %}" class="btn-place">Place Order</a>
+    {% else %}
+      <p class="text-muted">Please login to place your order.</p>
+      <a href="{% url 'login' %}?next={% url 'cart_view' %}" class="btn btn-primary">Login</a>
+    {% endif %}
+
+    <a href="{% url 'menu_list' %}" class="btn btn-secondary">Back to Menu</a>
+  </div>
+
+  {% else %}
+
+  <div class="empty-cart">
+    <div class="empty-cart-icon">🛒</div>
+    <h3 class="fw-bold">Your cart is empty</h3>
+    <p class="text-muted">Looks like you haven't added anything yet!</p>
+    <a href="{% url 'menu_list' %}" class="btn btn-primary">Browse Menu</a>
+  </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}
