@@ -7,6 +7,9 @@ SECRET_KEY = 'demo-secret-key-change-in-production'
 DEBUG = True
 ALLOWED_HOSTS = ['smart-canteen-full-6.onrender.com','127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://smart-canteen-full-6.onrender.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
